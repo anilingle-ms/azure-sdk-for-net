@@ -23,12 +23,12 @@ namespace Microsoft.Azure.Management.Network
     using System.Threading.Tasks;
 
     /// <summary>
-    /// RouteFiltersOperations operations.
+    /// PublicIPPrefixesOperations operations.
     /// </summary>
-    internal partial class RouteFiltersOperations : IServiceOperations<NetworkManagementClient>, IRouteFiltersOperations
+    internal partial class PublicIPPrefixesOperations : IServiceOperations<NetworkManagementClient>, IPublicIPPrefixesOperations
     {
         /// <summary>
-        /// Initializes a new instance of the RouteFiltersOperations class.
+        /// Initializes a new instance of the PublicIPPrefixesOperations class.
         /// </summary>
         /// <param name='client'>
         /// Reference to the service client.
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Management.Network
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        internal RouteFiltersOperations(NetworkManagementClient client)
+        internal PublicIPPrefixesOperations(NetworkManagementClient client)
         {
             if (client == null)
             {
@@ -51,13 +51,13 @@ namespace Microsoft.Azure.Management.Network
         public NetworkManagementClient Client { get; private set; }
 
         /// <summary>
-        /// Deletes the specified route filter.
+        /// Deletes the specified public IP prefix.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the PublicIpPrefix.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -65,24 +65,24 @@ namespace Microsoft.Azure.Management.Network
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Send request
-            AzureOperationResponse _response = await BeginDeleteWithHttpMessagesAsync(resourceGroupName, routeFilterName, customHeaders, cancellationToken).ConfigureAwait(false);
+            AzureOperationResponse _response = await BeginDeleteWithHttpMessagesAsync(resourceGroupName, publicIpPrefixName, customHeaders, cancellationToken).ConfigureAwait(false);
             return await Client.GetPostOrDeleteOperationResultAsync(_response, customHeaders, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the specified route filter.
+        /// Gets the specified public IP prefix in a specified resource group.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the PublicIPPrefx.
         /// </param>
         /// <param name='expand'>
-        /// Expands referenced express route bgp peering resources.
+        /// Expands referenced resources.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -105,15 +105,15 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<RouteFilter>> GetWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<PublicIPPrefix>> GetWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (resourceGroupName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (routeFilterName == null)
+            if (publicIpPrefixName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "publicIpPrefixName");
             }
             if (Client.SubscriptionId == null)
             {
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Management.Network
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
-                tracingParameters.Add("routeFilterName", routeFilterName);
+                tracingParameters.Add("publicIpPrefixName", publicIpPrefixName);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("expand", expand);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Management.Network
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIpPrefixName}").ToString();
             _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
-            _url = _url.Replace("{routeFilterName}", System.Uri.EscapeDataString(routeFilterName));
+            _url = _url.Replace("{publicIpPrefixName}", System.Uri.EscapeDataString(publicIpPrefixName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<RouteFilter>();
+            var _result = new AzureOperationResponse<PublicIPPrefix>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -255,7 +255,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<RouteFilter>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<PublicIPPrefix>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -275,16 +275,16 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Creates or updates a route filter in a specified resource group.
+        /// Creates or updates a static or dynamic public IP prefix.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the public IP prefix.
         /// </param>
-        /// <param name='routeFilterParameters'>
-        /// Parameters supplied to the create or update route filter operation.
+        /// <param name='parameters'>
+        /// Parameters supplied to the create or update public IP prefix operation.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -292,24 +292,24 @@ namespace Microsoft.Azure.Management.Network
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public async Task<AzureOperationResponse<RouteFilter>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, RouteFilter routeFilterParameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<PublicIPPrefix>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, PublicIPPrefix parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Send Request
-            AzureOperationResponse<RouteFilter> _response = await BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, routeFilterName, routeFilterParameters, customHeaders, cancellationToken).ConfigureAwait(false);
+            AzureOperationResponse<PublicIPPrefix> _response = await BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, publicIpPrefixName, parameters, customHeaders, cancellationToken).ConfigureAwait(false);
             return await Client.GetPutOrPatchOperationResultAsync(_response, customHeaders, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Updates a route filter in a specified resource group.
+        /// Updates public IP prefix tags.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the public IP prefix.
         /// </param>
-        /// <param name='routeFilterParameters'>
-        /// Parameters supplied to the update route filter operation.
+        /// <param name='parameters'>
+        /// Parameters supplied to update public IP prefix tags.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -317,19 +317,16 @@ namespace Microsoft.Azure.Management.Network
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public async Task<AzureOperationResponse<RouteFilter>> UpdateWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, PatchRouteFilter routeFilterParameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<PublicIPPrefix>> UpdateTagsWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, TagsObject parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Send Request
-            AzureOperationResponse<RouteFilter> _response = await BeginUpdateWithHttpMessagesAsync(resourceGroupName, routeFilterName, routeFilterParameters, customHeaders, cancellationToken).ConfigureAwait(false);
+            AzureOperationResponse<PublicIPPrefix> _response = await BeginUpdateTagsWithHttpMessagesAsync(resourceGroupName, publicIpPrefixName, parameters, customHeaders, cancellationToken).ConfigureAwait(false);
             return await Client.GetPutOrPatchOperationResultAsync(_response, customHeaders, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets all route filters in a resource group.
+        /// Gets all the public IP prefixes in a subscription.
         /// </summary>
-        /// <param name='resourceGroupName'>
-        /// The name of the resource group.
-        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -351,12 +348,8 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<RouteFilter>>> ListByResourceGroupWithHttpMessagesAsync(string resourceGroupName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<PublicIPPrefix>>> ListAllWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (resourceGroupName == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
-            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -369,15 +362,13 @@ namespace Microsoft.Azure.Management.Network
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "ListByResourceGroup", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "ListAll", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters").ToString();
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPPrefixes").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -477,7 +468,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<IPage<RouteFilter>>();
+            var _result = new AzureOperationResponse<IPage<PublicIPPrefix>>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -490,7 +481,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<RouteFilter>>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<PublicIPPrefix>>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -510,8 +501,11 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Gets all route filters in a subscription.
+        /// Gets all public IP prefixes in a resource group.
         /// </summary>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group.
+        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -533,8 +527,12 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<RouteFilter>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<PublicIPPrefix>>> ListWithHttpMessagesAsync(string resourceGroupName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (resourceGroupName == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -547,13 +545,15 @@ namespace Microsoft.Azure.Management.Network
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes").ToString();
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -653,7 +653,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<IPage<RouteFilter>>();
+            var _result = new AzureOperationResponse<IPage<PublicIPPrefix>>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -666,7 +666,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<RouteFilter>>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<PublicIPPrefix>>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -686,13 +686,13 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Deletes the specified route filter.
+        /// Deletes the specified public IP prefix.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the PublicIpPrefix.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -712,15 +712,15 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse> BeginDeleteWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse> BeginDeleteWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (resourceGroupName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (routeFilterName == null)
+            if (publicIpPrefixName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "publicIpPrefixName");
             }
             if (Client.SubscriptionId == null)
             {
@@ -735,16 +735,16 @@ namespace Microsoft.Azure.Management.Network
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
-                tracingParameters.Add("routeFilterName", routeFilterName);
+                tracingParameters.Add("publicIpPrefixName", publicIpPrefixName);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "BeginDelete", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIpPrefixName}").ToString();
             _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
-            _url = _url.Replace("{routeFilterName}", System.Uri.EscapeDataString(routeFilterName));
+            _url = _url.Replace("{publicIpPrefixName}", System.Uri.EscapeDataString(publicIpPrefixName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -859,16 +859,16 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Creates or updates a route filter in a specified resource group.
+        /// Creates or updates a static or dynamic public IP prefix.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the public IP prefix.
         /// </param>
-        /// <param name='routeFilterParameters'>
-        /// Parameters supplied to the create or update route filter operation.
+        /// <param name='parameters'>
+        /// Parameters supplied to the create or update public IP prefix operation.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -891,19 +891,19 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<RouteFilter>> BeginCreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, RouteFilter routeFilterParameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<PublicIPPrefix>> BeginCreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, PublicIPPrefix parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (resourceGroupName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (routeFilterName == null)
+            if (publicIpPrefixName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "publicIpPrefixName");
             }
-            if (routeFilterParameters == null)
+            if (parameters == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterParameters");
+                throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
             }
             if (Client.SubscriptionId == null)
             {
@@ -918,17 +918,17 @@ namespace Microsoft.Azure.Management.Network
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
-                tracingParameters.Add("routeFilterName", routeFilterName);
-                tracingParameters.Add("routeFilterParameters", routeFilterParameters);
+                tracingParameters.Add("publicIpPrefixName", publicIpPrefixName);
+                tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "BeginCreateOrUpdate", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIpPrefixName}").ToString();
             _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
-            _url = _url.Replace("{routeFilterName}", System.Uri.EscapeDataString(routeFilterName));
+            _url = _url.Replace("{publicIpPrefixName}", System.Uri.EscapeDataString(publicIpPrefixName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -973,9 +973,9 @@ namespace Microsoft.Azure.Management.Network
 
             // Serialize Request
             string _requestContent = null;
-            if(routeFilterParameters != null)
+            if(parameters != null)
             {
-                _requestContent = Rest.Serialization.SafeJsonConvert.SerializeObject(routeFilterParameters, Client.SerializationSettings);
+                _requestContent = Rest.Serialization.SafeJsonConvert.SerializeObject(parameters, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
@@ -1034,7 +1034,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<RouteFilter>();
+            var _result = new AzureOperationResponse<PublicIPPrefix>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1047,7 +1047,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<RouteFilter>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<PublicIPPrefix>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1065,7 +1065,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<RouteFilter>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<PublicIPPrefix>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1085,16 +1085,16 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Updates a route filter in a specified resource group.
+        /// Updates public IP prefix tags.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='routeFilterName'>
-        /// The name of the route filter.
+        /// <param name='publicIpPrefixName'>
+        /// The name of the public IP prefix.
         /// </param>
-        /// <param name='routeFilterParameters'>
-        /// Parameters supplied to the update route filter operation.
+        /// <param name='parameters'>
+        /// Parameters supplied to update public IP prefix tags.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1117,19 +1117,19 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<RouteFilter>> BeginUpdateWithHttpMessagesAsync(string resourceGroupName, string routeFilterName, PatchRouteFilter routeFilterParameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<PublicIPPrefix>> BeginUpdateTagsWithHttpMessagesAsync(string resourceGroupName, string publicIpPrefixName, TagsObject parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (resourceGroupName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (routeFilterName == null)
+            if (publicIpPrefixName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "publicIpPrefixName");
             }
-            if (routeFilterParameters == null)
+            if (parameters == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "routeFilterParameters");
+                throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
             }
             if (Client.SubscriptionId == null)
             {
@@ -1144,17 +1144,17 @@ namespace Microsoft.Azure.Management.Network
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
-                tracingParameters.Add("routeFilterName", routeFilterName);
-                tracingParameters.Add("routeFilterParameters", routeFilterParameters);
+                tracingParameters.Add("publicIpPrefixName", publicIpPrefixName);
+                tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "BeginUpdate", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "BeginUpdateTags", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIpPrefixName}").ToString();
             _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
-            _url = _url.Replace("{routeFilterName}", System.Uri.EscapeDataString(routeFilterName));
+            _url = _url.Replace("{publicIpPrefixName}", System.Uri.EscapeDataString(publicIpPrefixName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (apiVersion != null)
@@ -1199,9 +1199,9 @@ namespace Microsoft.Azure.Management.Network
 
             // Serialize Request
             string _requestContent = null;
-            if(routeFilterParameters != null)
+            if(parameters != null)
             {
-                _requestContent = Rest.Serialization.SafeJsonConvert.SerializeObject(routeFilterParameters, Client.SerializationSettings);
+                _requestContent = Rest.Serialization.SafeJsonConvert.SerializeObject(parameters, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
@@ -1260,7 +1260,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<RouteFilter>();
+            var _result = new AzureOperationResponse<PublicIPPrefix>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1273,7 +1273,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<RouteFilter>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<PublicIPPrefix>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1293,7 +1293,7 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Gets all route filters in a resource group.
+        /// Gets all the public IP prefixes in a subscription.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
@@ -1319,7 +1319,7 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<RouteFilter>>> ListByResourceGroupNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<PublicIPPrefix>>> ListAllNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (nextPageLink == null)
             {
@@ -1334,7 +1334,7 @@ namespace Microsoft.Azure.Management.Network
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("nextPageLink", nextPageLink);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "ListByResourceGroupNext", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "ListAllNext", tracingParameters);
             }
             // Construct URL
             string _url = "{nextLink}";
@@ -1433,7 +1433,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<IPage<RouteFilter>>();
+            var _result = new AzureOperationResponse<IPage<PublicIPPrefix>>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1446,7 +1446,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<RouteFilter>>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<PublicIPPrefix>>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1466,7 +1466,7 @@ namespace Microsoft.Azure.Management.Network
         }
 
         /// <summary>
-        /// Gets all route filters in a subscription.
+        /// Gets all public IP prefixes in a resource group.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
@@ -1492,7 +1492,7 @@ namespace Microsoft.Azure.Management.Network
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<RouteFilter>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<PublicIPPrefix>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (nextPageLink == null)
             {
@@ -1606,7 +1606,7 @@ namespace Microsoft.Azure.Management.Network
                 throw ex;
             }
             // Create Result
-            var _result = new AzureOperationResponse<IPage<RouteFilter>>();
+            var _result = new AzureOperationResponse<IPage<PublicIPPrefix>>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1619,7 +1619,7 @@ namespace Microsoft.Azure.Management.Network
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<RouteFilter>>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Rest.Serialization.SafeJsonConvert.DeserializeObject<Page<PublicIPPrefix>>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {

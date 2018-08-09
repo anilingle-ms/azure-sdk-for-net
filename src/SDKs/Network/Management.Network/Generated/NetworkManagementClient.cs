@@ -56,19 +56,20 @@ namespace Microsoft.Azure.Management.Network
         public string SubscriptionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the preferred language for the response.
+        /// The preferred language for the response.
         /// </summary>
         public string AcceptLanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets the retry timeout in seconds for Long Running Operations.
-        /// Default value is 30.
+        /// The retry timeout in seconds for Long Running Operations. Default value is
+        /// 30.
         /// </summary>
         public int? LongRunningOperationRetryTimeout { get; set; }
 
         /// <summary>
-        /// When set to true a unique x-ms-client-request-id value is generated and
-        /// included in each request. Default is true.
+        /// Whether a unique x-ms-client-request-id should be generated. When set to
+        /// true a unique x-ms-client-request-id value is generated and included in
+        /// each request. Default is true.
         /// </summary>
         public bool? GenerateClientRequestId { get; set; }
 
@@ -221,6 +222,11 @@ namespace Microsoft.Azure.Management.Network
         /// Gets the IPublicIPAddressesOperations.
         /// </summary>
         public virtual IPublicIPAddressesOperations PublicIPAddresses { get; private set; }
+
+        /// <summary>
+        /// Gets the IPublicIPPrefixesOperations.
+        /// </summary>
+        public virtual IPublicIPPrefixesOperations PublicIPPrefixes { get; private set; }
 
         /// <summary>
         /// Gets the IRouteFiltersOperations.
@@ -548,6 +554,7 @@ namespace Microsoft.Azure.Management.Network
             ConnectionMonitors = new ConnectionMonitorsOperations(this);
             Operations = new Operations(this);
             PublicIPAddresses = new PublicIPAddressesOperations(this);
+            PublicIPPrefixes = new PublicIPPrefixesOperations(this);
             RouteFilters = new RouteFiltersOperations(this);
             RouteFilterRules = new RouteFilterRulesOperations(this);
             RouteTables = new RouteTablesOperations(this);
@@ -647,7 +654,7 @@ namespace Microsoft.Azure.Management.Network
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.SubscriptionId");
             }
-            string apiVersion = "2018-04-01";
+            string apiVersion = "2018-07-01";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
